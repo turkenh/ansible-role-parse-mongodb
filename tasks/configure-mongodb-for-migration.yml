@@ -1,0 +1,51 @@
+---
+- name: Cat fullchain1.pem into /etc/ssl/mongo.pem
+  shell: cat /etc/letsencrypt/archive/{{mongodb_domain}}/fullchain1.pem > /etc/ssl/mongo.pem
+
+- name: Cat privkey1.pem into /etc/ssl/mongo.pem
+  shell: cat /etc/letsencrypt/archive/{{mongodb_domain}}/privkey1.pem >> /etc/ssl/mongo.pem
+
+- name: Change owner and mode for /etc/ssl/mongo.pem
+  file: path=/etc/ssl/mongo.pem owner=mongodb group=mongodb mode=0600
+
+- name: Copy mongodb.conf file
+  copy: src=mongod.conf dest=/etc/mongod.conf owner=root group=root mode=0644
+
+#- name: Install pymongo
+#  pip: name=pymongo state=present
+
+- set_fact:
+    database_to_use: admin
+    user_to_create: "{{mongodb_admin_user}}"
+    user_password_to_create: "{{mongodb_admin_password}}"
+    roles_as_string: '{ role: "userAdminAnyDatabase", db: "admin" }'
+
+- name: Copy createUser script
+  template: src=createUser.j2 dest=/tmp/createAdminUser.js
+
+# ignore errors in case admin user already created...
+- name: Create admin user
+  shell: mongo --port 27017 < /tmp/createAdminUser.js
+  failed_when: false
+
+- name: Restart the mongod service
+  service: name=mongod state=restarted
+
+- set_fact:
+    database_to_use: "{{database_name}}"
+    user_to_create: parse
+    user_password_to_create: "{{mongo_parse_password}}"
+    roles_as_string: '"readWrite", "dbAdmin"'
+
+- name: Copy createUser script
+  template: src=createUser.j2 dest=/tmp/createParseUserAndDb.js
+
+- name: Create database and parse user
+  shell: mongo --port 27017 --ssl --sslAllowInvalidCertificates --authenticationDatabase admin --username {{mongodb_admin_user}} --password {{mongodb_admin_password}} < /tmp/createParseUserAndDb.js
+
+- name: Set parse_mongodb_database_uri
+  set_fact:
+    parse_mongodb_database_uri: "mongodb://parse:{{mongo_parse_password}}@{{mongodb_domain}}:27017/{{database_name}}?ssl=true"
+    
+- name: Print MongoDB connection string
+  debug: msg="{{parse_mongodb_database_uri}}"

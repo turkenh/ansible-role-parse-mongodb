@@ -1,0 +1,8 @@
+use {{ database_to_use }}
+if(!db.getUser("{{ user_to_create }}")){
+  db.createUser({
+      user: "{{ user_to_create }}",
+      pwd: "{{ user_password_to_create }}",
+      roles: [ {{ roles_as_string }} ]
+  });
+}

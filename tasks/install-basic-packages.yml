@@ -1,0 +1,7 @@
+---
+- name: Install basic packages
+  apt: name={{item}} state=present force=yes update_cache=yes
+  with_items:
+    - build-essential
+    - git
+    - python-pip

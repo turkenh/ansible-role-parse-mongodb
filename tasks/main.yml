@@ -1,0 +1,5 @@
+---
+- include: install-basic-packages.yml
+- include: install-mongodb.yml
+- include: retrieve-certificate.yml
+- include: configure-mongodb-for-migration.yml
