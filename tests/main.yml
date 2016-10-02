@@ -12,8 +12,8 @@
 - name: Test parse-mongodb role
   hosts: docker_containers
   vars:
-    parse_mongodb_domain: example.com
-    parse_mongodb_email_for_certificate: example@example.com
+    parse_mongodb_domain: api.easytipscollection.com
+    parse_mongodb_email_for_certificate: turkenh@gmail.com
     parse_mongodb_use_letsencrypt_staging: true
   roles:
     - parse-mongodb
