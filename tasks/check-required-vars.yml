@@ -1,0 +1,8 @@
+---
+- name: Check if "parse_mongodb_domain" is defined
+  fail: msg="ERROR - required variable 'parse_mongodb_domain' missing."
+  when: parse_mongodb_domain is not defined
+
+- name: Check if "parse_mongodb_email_for_certificate is" defined
+  fail: msg="ERROR - required variable 'parse_mongodb_email_for_certificate' missing."
+  when: parse_mongodb_email_for_certificate is not defined

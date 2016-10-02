@@ -1,0 +1,5 @@
+parse_mongodb_use_letsencrypt_staging: false
+parse_mongodb_admin_user: parseadmin
+parse_mongodb_admin_password: parseadmin
+parse_mongodb_database_name: myGame
+parse_mongodb_parse_password: pass4parse
