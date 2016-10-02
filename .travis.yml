@@ -31,6 +31,10 @@ script:
   - ansible-playbook -i tests/inventory tests/main.yml --syntax-check
   - sudo ansible-playbook -i tests/inventory tests/main.yml
 
+after_script:
+  # Cleanup
+  - sudo docker stop $(docker ps -aq) && sudo docker rm $(docker ps -aq)
+
 #notifications:
   # notify ansible galaxy of test results
  # webhooks: http://galaxy-qa.ansible.com/api/v1/notifications/
