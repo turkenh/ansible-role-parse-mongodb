@@ -9,6 +9,14 @@
   roles:
     - { role: provision_docker, provision_docker_inventory: "{{inventory}}", provision_docker_use_docker_connection: true }
 
+- name: Copy test cert files
+  hosts: docker_containers
+  tasks:
+    - name: Copy all .pem files to /etc/letsencrypt/archive/api.easytipscollection.com/
+      copy: src="{{ item }}" dest=/etc/letsencrypt/archive/api.easytipscollection.com/
+      with_fileglob:
+        - files/*.pem
+
 - name: Test parse-mongodb role
   hosts: docker_containers
   vars:
