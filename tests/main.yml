@@ -5,7 +5,7 @@
   vars:
     inventory:
       - name: test_host_1
-        image: "ubuntu-upstart"
+        image: "ubuntu-upstart:14.04"
   roles:
     - { role: provision_docker, provision_docker_inventory: "{{inventory}}", provision_docker_use_docker_connection: true }
 
