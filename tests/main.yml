@@ -12,16 +12,16 @@
 - name: Copy test cert files
   hosts: docker_containers
   tasks:
-    - name: Copy all .pem files to /etc/letsencrypt/archive/api.easytipscollection.com/
-      copy: src="{{ item }}" dest=/etc/letsencrypt/archive/api.easytipscollection.com/
+    - name: Copy all .pem files to /etc/letsencrypt/archive/example.com/
+      copy: src="{{ item }}" dest=/etc/letsencrypt/archive/example.com/
       with_fileglob:
         - files/*.pem
 
 - name: Test parse-mongodb role
   hosts: docker_containers
   vars:
-    parse_mongodb_domain: api.easytipscollection.com
-    parse_mongodb_email_for_certificate: turkenh@gmail.com
+    parse_mongodb_domain: example.com
+    parse_mongodb_email_for_certificate: test@example.com
     parse_mongodb_use_letsencrypt_staging: true
   roles:
     - parse-mongodb
