@@ -43,9 +43,9 @@
 - name: Create database and parse user
   shell: mongo --port 27017 --ssl --sslAllowInvalidCertificates --authenticationDatabase admin --username {{parse_mongodb_admin_user}} --password {{parse_mongodb_admin_password}} < /tmp/createParseUserAndDb.js
 
-- name: Set parse_mongodb_database_uri
+- name: Set parse_server_mongodb_database_uri
   set_fact:
-    parse_mongodb_database_uri: "mongodb://parse:{{parse_mongodb_parse_password}}@{{parse_mongodb_domain}}:27017/{{parse_mongodb_database_name}}?ssl=true"
+    parse_server_mongodb_database_uri: "mongodb://parse:{{parse_mongodb_parse_password}}@{{parse_mongodb_domain}}:27017/{{parse_mongodb_database_name}}?ssl=true"
     
 - name: Print MongoDB connection string
-  debug: msg="{{parse_mongodb_database_uri}}"
+  debug: msg="{{parse_server_mongodb_database_uri}}"
